@@ -1,33 +1,61 @@
 const userInputEl = document.querySelector('.guessField');
-const randomNumEl = Math.floor(Math.random()*100+1);
+let randomNumEl = Math.floor(Math.random()*100+1);
 console.log(randomNumEl);
 const prevGuessesEl = document.querySelector('.guesses');
 const resultEl = document.querySelector('.lastResult');
 const lowOrHi = document.querySelector('.lowOrHi');
 const btnEl = document.querySelector('.guessSubmit');
 
+let count=0;
+
+
+
+function setReset(){
+    userInputEl.disabled = true;
+    btnEl.disabled = true;
+    resetButton = document.createElement('button');
+    resetButton.textContent = 'New Game';
+    document.body.append(resetButton);
+    resetButton.addEventListener('click',gameReset);
+    
+}
+
+
 function gameReset(){
-    userInputEl.value = '';
-    prevGuessesEl.textContent = '';
+    count = 0;
+    resetButton.parentNode.removeChild(resetButton);
+    userInputEl.disabled = false;
+    btnEl.disabled = false;
     resultEl.textContent = '';
-    resultEl.style.backgroundColor = 'none';
-    lowOrHi.remove('button');
+    prevGuessesEl.textContent = '';
+    randomNumEl = Math.floor(Math.random()*100+1);
+    resultEl.style.backgroundColor = 'white';
 }
 
 function renderResult(){
+    count++;
     if(userInputEl.value == randomNumEl){
         prevGuessesEl.textContent +=userInputEl.value  +  ' ';
         resultEl.textContent = 'Congrats!!,You were right';
         resultEl.style.backgroundColor = 'green';
-        lowOrHi.innerHTML = `<button> Reset </button>`;
-        lowOrHi.addEventListener('click',gameReset)
-        
+        setReset();  
     }
     else if (userInputEl.value < randomNumEl){
         prevGuessesEl.textContent +=userInputEl.value +' ';
         resultEl.textContent = 'Wrong, too Low';
         resultEl.style.backgroundColor = 'red';
     }
+    else if (userInputEl.value > randomNumEl){
+        prevGuessesEl.textContent +=userInputEl.value +' ';
+        resultEl.textContent = 'Wrong, too High';
+        resultEl.style.backgroundColor = 'red';
+    }
+    console.log(count);
+    userInputEl.value = '';
+    userInputEl.focus();
+    if(count == 10){
+        setReset();
+    }
 }
 
-btnEl.addEventListener('click',renderResult)
+btnEl.addEventListener('click',renderResult);
