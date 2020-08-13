@@ -1,4 +1,5 @@
 const userInputEl = document.querySelector('.guessField');
+userInputEl.focus();
 let randomNumEl = Math.floor(Math.random()*100+1);
 console.log(randomNumEl);
 const prevGuessesEl = document.querySelector('.guesses');
@@ -34,18 +35,21 @@ function gameReset(){
 
 function renderResult(){
     count++;
-    if(userInputEl.value == randomNumEl){
+    if(Number(userInputEl.value) == '' ||userInputEl.value > 99 || userInputEl.value < 1 ||isNaN(userInputEl.value)){
+        return alert('Enter vaild number between 1 to 100')
+    }
+    if(Number(userInputEl.value) == randomNumEl){
         prevGuessesEl.textContent +=userInputEl.value  +  ' ';
         resultEl.textContent = 'Congrats!!,You were right';
         resultEl.style.backgroundColor = 'green';
         setReset();  
     }
-    else if (userInputEl.value < randomNumEl){
+    else if (Number(userInputEl.value) < randomNumEl){
         prevGuessesEl.textContent +=userInputEl.value +' ';
         resultEl.textContent = 'Wrong, too Low';
         resultEl.style.backgroundColor = 'red';
     }
-    else if (userInputEl.value > randomNumEl){
+    else if (Number(userInputEl.value) > randomNumEl){
         prevGuessesEl.textContent +=userInputEl.value +' ';
         resultEl.textContent = 'Wrong, too High';
         resultEl.style.backgroundColor = 'red';
